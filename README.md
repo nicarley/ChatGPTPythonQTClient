@@ -3,7 +3,7 @@ ChatGPT Python QT Client via API and OPENAPI
 
 <img src="https://raw.githubusercontent.com/nicarley/ChatGPTPythonQTClient/main/chatgptclient.jpg" />
 
-This python client uses the ChatGPT/OpenAI API.  You must get an API Key from User Settings at OPENAI's website:
+This python QT client uses the ChatGPT/OpenAI API.  You must get an API Key from User Settings at OPENAI's website:
 https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key
 
 
@@ -14,7 +14,7 @@ PyQt5.QtWidgets: QApplication, QMainWindow, QLineEdit, QTextEdit, QLabel, QVBoxL
     QScrollArea, QPushButton
 
 Useful Notes:
-1.  Make sure you have installed the libraries imported at the top of the list of the Main Chat Window File.  
+1.  Make sure you have installed the libraries imported at the top of the list of the Main Chat Window File. Python 3.8 is environment written in and tried.  Have not tested other environments. 
 2.  You must have a text file that containts your API Key only (filepath indicated at the top of the MainChat.py).  The variable that you need to change is called filename
 3.  Once you set the API Key in the Text file, simple run python MainChat.py from your enviroment.
 4.  When loading the app, it verifies that the file listed is at the filepath specified.  If it is not, it creates it.  If it is, it simply reads in the API Key.
