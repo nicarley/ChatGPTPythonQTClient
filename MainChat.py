@@ -5,7 +5,8 @@ from PyQt5.QtGui import QIcon, QPixmap, QTextOption
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLabel, QVBoxLayout, QHBoxLayout, QWidget, \
     QScrollArea, QPushButton
 
-filename = 'path/to/file/chatgptapikey.txt'
+# Must change the path to this file.  The file should only contain the API Key.
+filename = 'chatgptapikey.txt'
 
 # check if file exists
 if os.path.isfile(filename):
