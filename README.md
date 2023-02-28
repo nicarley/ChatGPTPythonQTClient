@@ -1,5 +1,5 @@
 # ChatGPT Python QT Client
-ChatGPT Python QT Client via API and OPENAPI
+ChatGPT Python QT Client via API and OPENAI
 
 <img src="https://raw.githubusercontent.com/nicarley/ChatGPTPythonQTClient/main/chatgptclient.jpg" />
 
