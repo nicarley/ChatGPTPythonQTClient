@@ -20,8 +20,7 @@ Useful Notes:
 4.  When loading the app, it verifies that the file listed is at the filepath specified.  If it is not, it creates it.  If it is, it simply reads in the API Key.
 5.  In the app, it displays the API Key listed from the Text file.  If you change the text field to a new api key, when you send your request, it will save the new API key to the text file.  
 6.  You can change the properties available in the API Key.  They are set as:          
-7.  
-8.  # Make the API request
+        # Make the API request
         #Don't change the next 1 line only modify below the response:
         openai.api_key = oapikey
         response = openai.Completion.create(
