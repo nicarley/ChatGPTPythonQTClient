@@ -88,7 +88,7 @@ class SearchAnswer(QMainWindow):
         self.resize(640, 480)
 
         # Create the ChatGPT icon
-        icon = QIcon(QPixmap("path/to/logofile.png"))
+        icon = QIcon(QPixmap("openailogo.png"))
         self.setWindowIcon(icon)
 
         # Connect the search bar returnPressed signal to the send button clicked signal
