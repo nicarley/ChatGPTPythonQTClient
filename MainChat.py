@@ -1,4 +1,5 @@
 ## Created by Nicolas Farley 02/28/2023
+## Chat GPT Client using OPEN AI's API, Python, and PyQT5.
 
 import sys
 import os
