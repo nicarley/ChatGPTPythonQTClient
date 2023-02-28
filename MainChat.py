@@ -1,3 +1,5 @@
+## Created by Nicolas Farley 02/28/2023
+
 import sys
 import os
 import openai
