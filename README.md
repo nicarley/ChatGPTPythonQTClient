@@ -1,6 +1,7 @@
 # ChatGPTPythonQTClient
 ChatGPT Python QT Client via API and OPENAPI
-https://raw.githubusercontent.com/nicarley/ChatGPTPythonQTClient/main/chatgptclient.jpg
+
+<img src="https://raw.githubusercontent.com/nicarley/ChatGPTPythonQTClient/main/chatgptclient.jpg" />
 
 This python client uses the ChatGPT/OpenAI API.  You must get an API Key from User Settings at OPENAI's website:
 https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key
