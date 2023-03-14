@@ -11,7 +11,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLa
 # Must change the path to this file.  The file should only contain the API Key.
 filename = 'chatgptapikey.txt'
 
-# check if file exists
 if os.path.isfile(filename):
     with open(filename, 'r') as f:
         oapikey = f.read().strip()
@@ -20,6 +19,7 @@ else:
     with open(filename, 'w') as f:
         f.write('')
     oapikey = ''
+
 
 class SearchAnswer(QMainWindow):
     def __init__(self):
@@ -43,7 +43,7 @@ class SearchAnswer(QMainWindow):
         self.answer_box = QTextEdit()
         self.answer_box.setReadOnly(True)
         self.answer_box.setWordWrapMode(QTextOption.WordWrap)
-        answer_label = QLabel("Assistant Answer:")
+        #  answer_label = QLabel("Assistant Answer:")
 
         # Create the vertical layout for the search bar and answer box
         v_layout = QVBoxLayout()
@@ -59,7 +59,7 @@ class SearchAnswer(QMainWindow):
 
         # Create the horizontal layout for the answer box
         h_layout_answer = QHBoxLayout()
-        h_layout_answer.addWidget(answer_label)
+        # h_layout_answer.addWidget(answer_label)
 
         # Create the scroll area for the answer box
         scroll_area = QScrollArea()
@@ -86,12 +86,10 @@ class SearchAnswer(QMainWindow):
         # Set the window title and size
         self.setWindowTitle("Chat GPT Client")
         self.resize(640, 480)
-
         # Create the ChatGPT icon
         icon = QIcon(QPixmap("openailogo.png"))
         self.setWindowIcon(icon)
-
-        # Connect the search bar returnPressed signal to the send button clicked signal
+  # Connect the search bar returnPressed signal to the send button clicked signal
         self.search_bar.returnPressed.connect(self.send_button.click)
 
     def make_request(self):
@@ -109,7 +107,6 @@ class SearchAnswer(QMainWindow):
         oapikey = self.api_key_textbox.text()
 
         # Make the API request
-        # Can changes the parameters below to change your chat responses
         openai.api_key = oapikey
         response = openai.Completion.create(
             engine="text-davinci-003",
@@ -122,14 +119,13 @@ class SearchAnswer(QMainWindow):
 
         # Check if the request was successful
         if "```" in response:
-            self.answer_box.setHtml("<pre>" + response + "</pre>")
+            # Append the response to the existing answer box content, separated by a line break
+            self.answer_box.insertPlainText("Ask: " + search_text + response + "\n\n")
         else:
+            # Append the response to the existing answer box content, separated by a line break
+            self.answer_box.insertPlainText("You:" + search_text + response + "\n\n")
             # Clear the search bar
             self.search_bar.clear()
-
-            # Set the response text in the answer box
-            cursor = self.answer_box.textCursor()
-            self.answer_box.setText(response)
 
 
 if __name__ == '__main__':
@@ -137,3 +133,4 @@ if __name__ == '__main__':
     window = SearchAnswer()
     window.show()
     sys.exit(app.exec_())
+
