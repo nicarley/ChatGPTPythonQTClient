@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLa
 # Must change the path to this file.  The file should only contain the API Key.
 filename = 'chatgptapikey.txt'
 
+
 if os.path.isfile(filename):
     with open(filename, 'r') as f:
         oapikey = f.read().strip()
@@ -36,7 +37,7 @@ class SearchAnswer(QMainWindow):
         api_key_box.addWidget(self.api_key_textbox)
 
         # Create the search bar
-        self.search_bar = QLineEdit()
+        self.search_bar = QTextEdit()
         search_label = QLabel("Ask:")
 
         # Create the answer box
@@ -86,11 +87,14 @@ class SearchAnswer(QMainWindow):
         # Set the window title and size
         self.setWindowTitle("Chat GPT Client")
         self.resize(640, 480)
+
         # Create the ChatGPT icon
         icon = QIcon(QPixmap("openailogo.png"))
         self.setWindowIcon(icon)
-  # Connect the search bar returnPressed signal to the send button clicked signal
-        self.search_bar.returnPressed.connect(self.send_button.click)
+        
+ # Connect the search bar returnPressed signal to the send button clicked signal only if you change the search_box to be a QLineEdit Must also  change toplaintext
+        # self.search_bar.returnPressed.connect(self.send_button.click)
+        # self.search_bar.textChanged.connect(self.send_button.click)
 
     def make_request(self):
         # Get the text from the API key text box
@@ -101,7 +105,8 @@ class SearchAnswer(QMainWindow):
             f.write(oapikey)
 
         # Get the text from the search bar
-        search_text = self.search_bar.text()
+        #search_text = self.search_bar.text()
+        search_text = self.search_bar.toPlainText()
 
         # Get the text from the API key text box
         oapikey = self.api_key_textbox.text()
@@ -120,7 +125,7 @@ class SearchAnswer(QMainWindow):
         # Check if the request was successful
         if "```" in response:
             # Append the response to the existing answer box content, separated by a line break
-            self.answer_box.insertPlainText("Ask: " + search_text + response + "\n\n")
+            self.answer_box.insertPlainText("Ask: " + search_text +  response + "\n\n")
         else:
             # Append the response to the existing answer box content, separated by a line break
             self.answer_box.insertPlainText("You:" + search_text + response + "\n\n")
