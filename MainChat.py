@@ -1,4 +1,4 @@
-## Created by Nicolas Farley 02/28/2023
+## Created by Nicolas Farley 03/15/2023
 ## Chat GPT Client using OPEN AI's API, Python, and PyQT5.
 
 import sys
@@ -8,9 +8,9 @@ from PyQt5.QtGui import QIcon, QPixmap, QTextOption
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLabel, QVBoxLayout, QHBoxLayout, QWidget, \
     QScrollArea, QPushButton
 
-# Must change the path to this file.  The file should only contain the API Key.
-filename = 'chatgptapikey.txt'
-
+#  Change these files to whatever you choose.  filename is for API key, and results save a log of the questions, and answers.
+filename = './chatgptapikey.txt'
+gptresults = './gptresults.txt'
 
 if os.path.isfile(filename):
     with open(filename, 'r') as f:
@@ -20,6 +20,15 @@ else:
     with open(filename, 'w') as f:
         f.write('')
     oapikey = ''
+
+if os.path.isfile(gptresults):
+    with open(gptresults, 'r') as f:
+        gpttext = f.read().strip()
+else:
+    # create a new file
+    with open(gptresults, 'w') as f:
+        f.write('')
+    gpttext = ''
 
 
 class SearchAnswer(QMainWindow):
@@ -42,6 +51,7 @@ class SearchAnswer(QMainWindow):
 
         # Create the answer box
         self.answer_box = QTextEdit()
+        self.answer_box.setText(gpttext)
         self.answer_box.setReadOnly(True)
         self.answer_box.setWordWrapMode(QTextOption.WordWrap)
         #  answer_label = QLabel("Assistant Answer:")
@@ -89,10 +99,10 @@ class SearchAnswer(QMainWindow):
         self.resize(640, 480)
 
         # Create the ChatGPT icon
-        icon = QIcon(QPixmap("openailogo.png"))
+        icon = QIcon(QPixmap("c:/temp/Helpdesk/resources/openai.png"))
         self.setWindowIcon(icon)
-        
- # Connect the search bar returnPressed signal to the send button clicked signal only if you change the search_box to be a QLineEdit Must also  change toplaintext
+
+        # Connect the search bar returnPressed signal to the send button clicked signal only if you change the search_box to be a QLineEdit Must also  change toplaintext
         # self.search_bar.returnPressed.connect(self.send_button.click)
         # self.search_bar.textChanged.connect(self.send_button.click)
 
@@ -101,15 +111,14 @@ class SearchAnswer(QMainWindow):
         oapikey = self.api_key_textbox.text()
 
         # Write the new API key to the file
-        with open(filename, 'w') as f:
-            f.write(oapikey)
-
+        with open(filename, "r") as f:
+            content = f.read()
+        if content != oapikey:
+            with open(filename, 'w') as file:
+                file.write(oapikey)
         # Get the text from the search bar
         #search_text = self.search_bar.text()
         search_text = self.search_bar.toPlainText()
-
-        # Get the text from the API key text box
-        oapikey = self.api_key_textbox.text()
 
         # Make the API request
         openai.api_key = oapikey
@@ -122,15 +131,11 @@ class SearchAnswer(QMainWindow):
             temperature=0.5,
         ).choices[0].text
 
-        # Check if the request was successful
-        if "```" in response:
-            # Append the response to the existing answer box content, separated by a line break
-            self.answer_box.insertPlainText("Ask: " + search_text +  response + "\n\n")
-        else:
-            # Append the response to the existing answer box content, separated by a line break
-            self.answer_box.insertPlainText("You:" + search_text + response + "\n\n")
-            # Clear the search bar
-            self.search_bar.clear()
+        self.answer_box.insertPlainText("You: " + search_text + response + "\n\n")
+        with open(f'{gptresults}', 'a') as f:
+            f.write("You: " + search_text + response + "\n\n")
+        # Clear the search bar
+        self.search_bar.clear()
 
 
 if __name__ == '__main__':
@@ -138,4 +143,3 @@ if __name__ == '__main__':
     window = SearchAnswer()
     window.show()
     sys.exit(app.exec_())
-
