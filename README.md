@@ -14,9 +14,9 @@ PyQt5.QtWidgets: QApplication, QMainWindow, QLineEdit, QTextEdit, QLabel, QVBoxL
     QScrollArea, QPushButton
 
 Useful Notes:
-1.  Make sure you have installed the libraries imported at the top of the list of the Main Chat Window File. Python 3.8 is environment written in and tried.  Have not tested other environments. 
+1.  Make sure you have installed the libraries imported at the top of the list of the Main Chat Window File. Python 3.10 is environment written in and tried.  Have not tested other environments. 
 2.  You must have a text file that containts your API Key only (filepath indicated at the top of the MainChat.py).  The variable that you need to change is called filename
-3.  Once you set the API Key in the Text file, simple run python MainChat.py from your enviroment.
+3.  Once you set the API Key in the Text file, simple run python MainChat.py from your enviroment.  Results will be written to a text file declared in the top of the file.  Both are read into the program each time is loaded.  If you change the API key it will write it to the api file declared also.
 4.  When loading the app, it verifies that the file listed is at the filepath specified.  If it is not, it creates it.  If it is, it simply reads in the API Key.
 5.  In the app, it displays the API Key listed from the Text file.  If you change the text field to a new api key, when you send your request, it will save the new API key to the text file.  
 6.  You can change the properties available in the API Key.  They are set as:          
@@ -31,4 +31,4 @@ Useful Notes:
             stop=None,
             temperature=0.5,
         ).choices[0].text
-
+adf
