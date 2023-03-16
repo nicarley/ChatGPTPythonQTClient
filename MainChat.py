@@ -109,6 +109,7 @@ class SearchAnswer(QMainWindow):
     def make_request(self):
         # Get the text from the API key text box
         oapikey = self.api_key_textbox.text()
+        openai.api_key = f'{oapikey}'
 
         # Write the new API key to the file
         with open(filename, "r") as f:
@@ -116,26 +117,35 @@ class SearchAnswer(QMainWindow):
         if content != oapikey:
             with open(filename, 'w') as file:
                 file.write(oapikey)
+
         # Get the text from the search bar
-        #search_text = self.search_bar.text()
         search_text = self.search_bar.toPlainText()
 
-        # Make the API request
-        openai.api_key = oapikey
+        # Define the prompt and parameters for the API request
+        prompt = f"You: {search_text}\nAI:"
         response = openai.Completion.create(
             engine="text-davinci-003",
-            prompt="User: " + search_text,
+            prompt=prompt,
+            temperature=0.5,
             max_tokens=2048,
             n=1,
-            stop=None,
-            temperature=0.5,
-        ).choices[0].text
+            stop="\n"
+        )
+        response_text = response.choices[0].text.strip()
 
-        self.answer_box.insertPlainText("You: " + search_text + response + "\n\n")
+        self.answer_box.insertPlainText("You: " + search_text + "\n" + "Response: " + response_text + "\n \n")
         with open(f'{gptresults}', 'a') as f:
-            f.write("You: " + search_text + response + "\n\n")
+            f.write("You: " + search_text + "\n" + "Response: " + response_text + "\n \n")
+
         # Clear the search bar
         self.search_bar.clear()
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = SearchAnswer()
+    window.show()
+    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
