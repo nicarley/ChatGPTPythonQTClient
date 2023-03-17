@@ -104,10 +104,6 @@ class SearchAnswer(QMainWindow):
         icon = QIcon(QPixmap("openai.png"))
         self.setWindowIcon(icon)
 
-        # Connect the search bar returnPressed signal to the send button clicked signal only if you change the search_box to be a QLineEdit Must also  change toplaintext
-        # self.search_bar.returnPressed.connect(self.send_button.click)
-        # self.search_bar.textChanged.connect(self.send_button.click)
-
         # Autoscroll the answer box to the bottom
         scroll_bar = self.answer_box.verticalScrollBar()
         scroll_bar.setValue(scroll_bar.maximum())
