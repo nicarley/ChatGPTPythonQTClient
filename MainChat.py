@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLa
 filename = './chatgptapikey.txt'
 gptresults = './gptresults.txt'
 
+# check if file exists
 if os.path.isfile(filename):
     with open(filename, 'r') as f:
         oapikey = f.read().strip()
@@ -47,14 +48,16 @@ class SearchAnswer(QMainWindow):
 
         # Create the search bar
         self.search_bar = QTextEdit()
-        search_label = QLabel("Ask:")
+        search_label = QLabel("Ask: ")
 
         # Create the answer box
         self.answer_box = QTextEdit()
         self.answer_box.setText(gpttext)
         self.answer_box.setReadOnly(True)
         self.answer_box.setWordWrapMode(QTextOption.WordWrap)
-        #  answer_label = QLabel("Assistant Answer:")
+        answer_label = QLabel("Chat:")
+        self.clear_button = QPushButton("Clear")
+        self.clear_button.clicked.connect(self.clear_answer_box)
 
         # Create the vertical layout for the search bar and answer box
         v_layout = QVBoxLayout()
@@ -70,32 +73,31 @@ class SearchAnswer(QMainWindow):
 
         # Create the horizontal layout for the answer box
         h_layout_answer = QHBoxLayout()
-        # h_layout_answer.addWidget(answer_label)
+        h_layout_answer.addWidget(answer_label)
 
         # Create the scroll area for the answer box
         scroll_area = QScrollArea()
         scroll_area.setWidget(self.answer_box)
         scroll_area.setWidgetResizable(True)
-
         h_layout_answer.addWidget(scroll_area)
 
         # Create the send button
         self.send_button = QPushButton("Send")
         self.send_button.clicked.connect(self.make_request)
-
         # Add the send button to the vertical layout
         v_layout.addWidget(self.send_button)
 
         # Add the answer box and send button to the vertical layout
         v_layout.addLayout(h_layout_answer)
-
+        # Add the clear button to the vertical layout
+        v_layout.addWidget(self.clear_button)
         # Create the central widget and set its layout
         central_widget = QWidget()
         central_widget.setLayout(v_layout)
         self.setCentralWidget(central_widget)
 
         # Set the window title and size
-        self.setWindowTitle("Chat GPT Client")
+        self.setWindowTitle("Virtual Assistant Chat")
         self.resize(640, 480)
 
         # Create the ChatGPT icon
@@ -105,6 +107,14 @@ class SearchAnswer(QMainWindow):
         # Connect the search bar returnPressed signal to the send button clicked signal only if you change the search_box to be a QLineEdit Must also  change toplaintext
         # self.search_bar.returnPressed.connect(self.send_button.click)
         # self.search_bar.textChanged.connect(self.send_button.click)
+
+        # Autoscroll the answer box to the bottom
+        scroll_bar = self.answer_box.verticalScrollBar()
+        scroll_bar.setValue(scroll_bar.maximum())
+
+    # Define the clear_answer_box method
+    def clear_answer_box(self):
+        self.answer_box.clear()
 
     def make_request(self):
         # Get the text from the API key text box
@@ -131,15 +141,16 @@ class SearchAnswer(QMainWindow):
         )
 
         reply = response["choices"][0]["message"]["content"]
-
-
-        self.answer_box.append("You: " + search_text + "\n" + "Response: " + reply + "\n \n") 
+        self.answer_box.append("\n" + "YOU: " + search_text + "\n" + "ANSWER: " + reply + "\n \n")
         with open(f'{gptresults}', 'a') as f:
-            f.write("You: " + search_text + "\n" + "Response: " + reply + "\n \n")
+            f.write("YOU: " + search_text + "\n" + "ANSWER: " + reply + "\n \n")
 
         # Clear the search bar
         self.search_bar.clear()
 
+        # Autoscroll the answer box to the bottom
+        scroll_bar = self.answer_box.verticalScrollBar()
+        scroll_bar.setValue(scroll_bar.maximum())
 
 
 if __name__ == '__main__':
@@ -147,3 +158,4 @@ if __name__ == '__main__':
     window = SearchAnswer()
     window.show()
     sys.exit(app.exec_())
+
