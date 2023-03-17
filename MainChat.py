@@ -1,4 +1,4 @@
-## Created by Nicolas Farley 03/15/2023
+## Created by Nicolas Farley 03/17/2023
 ## Chat GPT Client using OPEN AI's API, Python, and PyQT5.
 
 import sys
@@ -56,7 +56,7 @@ class SearchAnswer(QMainWindow):
         self.answer_box.setReadOnly(True)
         self.answer_box.setWordWrapMode(QTextOption.WordWrap)
         answer_label = QLabel("Chat:")
-        self.clear_button = QPushButton("Clear")
+        self.clear_button = QPushButton("Clear All Chat Logs")
         self.clear_button.clicked.connect(self.clear_answer_box)
 
         # Create the vertical layout for the search bar and answer box
@@ -101,7 +101,7 @@ class SearchAnswer(QMainWindow):
         self.resize(640, 480)
 
         # Create the ChatGPT icon
-        icon = QIcon(QPixmap("c:/temp/Helpdesk/resources/openai.png"))
+        icon = QIcon(QPixmap("openai.png"))
         self.setWindowIcon(icon)
 
         # Connect the search bar returnPressed signal to the send button clicked signal only if you change the search_box to be a QLineEdit Must also  change toplaintext
@@ -115,6 +115,9 @@ class SearchAnswer(QMainWindow):
     # Define the clear_answer_box method
     def clear_answer_box(self):
         self.answer_box.clear()
+        with open(gptresults, 'w') as f:
+            f.seek(0)
+            f.truncate()
 
     def make_request(self):
         # Get the text from the API key text box
