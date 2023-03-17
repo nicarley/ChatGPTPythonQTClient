@@ -58,9 +58,18 @@ class SearchAnswer(QMainWindow):
         answer_label = QLabel("Chat:")
         self.clear_button = QPushButton("Clear All Chat Logs")
         self.clear_button.clicked.connect(self.clear_answer_box)
+        # Create the import all chat logs button
+        self.import_button = QPushButton("Import All Chat Logs")
+        self.import_button.clicked.connect(self.import_chat_logs)
+        # Create the label
+        verify_label = QLabel("Please Verify information is accurate before using!")
+        verify_label.setStyleSheet("color: red")
 
         # Create the vertical layout for the search bar and answer box
         v_layout = QVBoxLayout()
+
+        # Add the label to the vertical layout
+        v_layout.addWidget(verify_label)
 
         # Add the API key box to the vertical layout
         v_layout.addLayout(api_key_box)
@@ -91,6 +100,8 @@ class SearchAnswer(QMainWindow):
         v_layout.addLayout(h_layout_answer)
         # Add the clear button to the vertical layout
         v_layout.addWidget(self.clear_button)
+        # Add the import button to the vertical layout
+        v_layout.addWidget(self.import_button)
         # Create the central widget and set its layout
         central_widget = QWidget()
         central_widget.setLayout(v_layout)
@@ -101,7 +112,7 @@ class SearchAnswer(QMainWindow):
         self.resize(640, 480)
 
         # Create the ChatGPT icon
-        icon = QIcon(QPixmap("openai.png"))
+        icon = QIcon(QPixmap("./openai.png"))
         self.setWindowIcon(icon)
 
         # Autoscroll the answer box to the bottom
@@ -111,9 +122,15 @@ class SearchAnswer(QMainWindow):
     # Define the clear_answer_box method
     def clear_answer_box(self):
         self.answer_box.clear()
-        with open(gptresults, 'w') as f:
-            f.seek(0)
-            f.truncate()
+        # with open(gptresults, 'w') as f:
+        #    f.seek(0)
+        #    f.truncate()
+
+    # Define the import_chat_logs method
+    def import_chat_logs(self):
+        with open(gptresults, 'r') as f:
+            gpttext = f.read().strip()
+        self.answer_box.setText(gpttext)
 
     def make_request(self):
         # Get the text from the API key text box
@@ -130,10 +147,8 @@ class SearchAnswer(QMainWindow):
         # Get the text from the search bar
         search_text = self.search_bar.toPlainText()
 
-        messages = []
         message = (search_text)
-        messages.append({"role": "user", "content": message})
-
+        messages = [{"role": "user", "content": message}]
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages
@@ -157,4 +172,3 @@ if __name__ == '__main__':
     window = SearchAnswer()
     window.show()
     sys.exit(app.exec_())
-
