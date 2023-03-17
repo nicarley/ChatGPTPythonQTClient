@@ -19,16 +19,4 @@ Useful Notes:
 3.  Once you set the API Key in the Text field, you are ready to ask questions.  Results will be written to a text file declared in the top of the file.  Both are read into variables each time the program each time is loaded.  If you change the API key it will write it to the api file declared also when the send button is clicked..
 4.  When loading the app, it verifies that the file listed is at the filepath specified.  If it is not, it creates it.  If it is, it simply reads in the API Key.
 5.  In the app, it displays the API Key listed from the Text file.  If you change the text field to a new api key, when you send your request, it will save the new API key to the text file.  
-6.  You can change the properties available in the API Key.  They are set as:          
-        # Make the API request
-        #Don't change the next 1 line only modify below the response:
-        openai.api_key = oapikey
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt="User: " + search_text,
-            max_tokens=2048,
-            n=1,
-            stop=None,
-            temperature=0.5,
-        ).choices[0].text
-adf
+
