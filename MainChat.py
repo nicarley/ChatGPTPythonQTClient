@@ -121,24 +121,25 @@ class SearchAnswer(QMainWindow):
         # Get the text from the search bar
         search_text = self.search_bar.toPlainText()
 
-        # Define the prompt and parameters for the API request
-        prompt = f"You: {search_text}\nAI:"
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
-            temperature=0.5,
-            max_tokens=2048,
-            n=1,
-            stop="\n"
-        )
-        response_text = response.choices[0].text.strip()
+        messages = []
+        message = (search_text)
+        messages.append({"role": "user", "content": message})
 
-        self.answer_box.insertPlainText("You: " + search_text + "\n" + "Response: " + response_text + "\n \n")
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+
+        reply = response["choices"][0]["message"]["content"]
+
+
+        self.answer_box.insertPlainText("You: " + search_text + "\n" + "Response: " + reply + "\n \n")
         with open(f'{gptresults}', 'a') as f:
-            f.write("You: " + search_text + "\n" + "Response: " + response_text + "\n \n")
+            f.write("You: " + search_text + "\n" + "Response: " + reply + "\n \n")
 
         # Clear the search bar
         self.search_bar.clear()
+
 
 
 if __name__ == '__main__':
