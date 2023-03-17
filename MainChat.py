@@ -133,20 +133,13 @@ class SearchAnswer(QMainWindow):
         reply = response["choices"][0]["message"]["content"]
 
 
-        self.answer_box.insertPlainText("You: " + search_text + "\n" + "Response: " + reply + "\n \n")
+        self.answer_box.appendPlainText("You: " + search_text + "\n" + "Response: " + reply + "\n \n") 
         with open(f'{gptresults}', 'a') as f:
             f.write("You: " + search_text + "\n" + "Response: " + reply + "\n \n")
 
         # Clear the search bar
         self.search_bar.clear()
 
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = SearchAnswer()
-    window.show()
-    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
