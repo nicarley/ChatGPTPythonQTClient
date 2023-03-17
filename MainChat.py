@@ -133,7 +133,7 @@ class SearchAnswer(QMainWindow):
         reply = response["choices"][0]["message"]["content"]
 
 
-        self.answer_box.appendPlainText("You: " + search_text + "\n" + "Response: " + reply + "\n \n") 
+        self.answer_box.append("You: " + search_text + "\n" + "Response: " + reply + "\n \n") 
         with open(f'{gptresults}', 'a') as f:
             f.write("You: " + search_text + "\n" + "Response: " + reply + "\n \n")
 
