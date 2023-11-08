@@ -1,16 +1,17 @@
-## Created by Nicolas Farley 03/17/2023
-## Chat GPT Client using OPEN AI's API, Python, and PyQT5.
+## Created by Nicolas Farley 11/08/2023
+## Chat GPT Client using OPEN AI's API, Python, and PyQT6.
 
 import sys
 import os
 import openai
-from PyQt5.QtGui import QIcon, QPixmap, QTextOption
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLabel, QVBoxLayout, QHBoxLayout, QWidget, \
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon, QPixmap, QTextOption
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QLabel, QVBoxLayout, QHBoxLayout, QWidget, \
     QScrollArea, QPushButton
 
-#  Change these files to whatever you choose.  filename is for API key, and results save a log of the questions, and answers.
-filename = './chatgptapikey.txt'
-gptresults = './gptresults.txt'
+
+filename = 'c:/temp/helpdesk/resources/chatgptapikey.txt'
+gptresults = 'c:/temp/helpdesk/resources/gptresults.txt'
 
 # check if file exists
 if os.path.isfile(filename):
@@ -54,9 +55,9 @@ class SearchAnswer(QMainWindow):
         self.answer_box = QTextEdit()
         self.answer_box.setText(gpttext)
         self.answer_box.setReadOnly(True)
-        self.answer_box.setWordWrapMode(QTextOption.WordWrap)
-        answer_label = QLabel("Chat:")
-        self.clear_button = QPushButton("Clear All Chat Logs")
+        self.answer_box.setWordWrapMode(QTextOption.WrapMode.WordWrap)
+        answer_label = QLabel("Assistant:")
+        self.clear_button = QPushButton("Clear Chat Logs")
         self.clear_button.clicked.connect(self.clear_answer_box)
         # Create the import all chat logs button
         self.import_button = QPushButton("Import All Chat Logs")
@@ -108,11 +109,11 @@ class SearchAnswer(QMainWindow):
         self.setCentralWidget(central_widget)
 
         # Set the window title and size
-        self.setWindowTitle("Virtual Assistant Chat")
-        self.resize(640, 480)
+        self.setWindowTitle("Virtual Assistant")
+        self.resize(800, 600)
 
         # Create the ChatGPT icon
-        icon = QIcon(QPixmap("./openai.png"))
+        icon = QIcon(QPixmap("c:/temp/Helpdesk/resources/openai.png"))
         self.setWindowIcon(icon)
 
         # Autoscroll the answer box to the bottom
@@ -150,7 +151,8 @@ class SearchAnswer(QMainWindow):
         message = (search_text)
         messages = [{"role": "user", "content": message}]
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            # model="gpt-3.5-turbo",
+            model="gpt-4-turbo",
             messages=messages
         )
 
@@ -171,4 +173,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = SearchAnswer()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
